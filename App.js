@@ -1,11 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import Constants from 'expo-constants'
+import TopBar from './components/TopBar'
+
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <TopBar />
+      <View style={styles.swipes}>
+
+      </View>
     </View>
   );
 }
@@ -13,8 +18,19 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: Constants.statusBarHeight
   },
+  swipes:{
+    flex:1,
+    padding:10,
+    paddingTop:8,
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 3
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    elevation: 7
+  }
 });
