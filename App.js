@@ -1,16 +1,49 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 import Constants from 'expo-constants'
 import TopBar from './components/TopBar'
-
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import SwipeImage from './components/SwipeImage';
+import BotomBar from './components/BottomBar'
 
 export default function App() {
+
+  const [users, setUsers] = useState([])
+  const [currentIndex, setCurrentIndex] = useState(0)
+  async function fetchUsers() {
+    try {
+      const { data } = await axios.get('https://randomuser.me/api/?gender=female&results=50')
+      setUsers(data.results)
+      console.log(data.results);
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Error getting users', '', [{
+        text: 'Retry', onPress: () => {
+          fetchUsers()
+        }
+      }])
+    }
+  }
+
+
+  useEffect(() => {
+    fetchUsers()
+  }, [])
+
+
+
   return (
     <View style={styles.container}>
       <TopBar />
       <View style={styles.swipes}>
-
+        {
+          users.length > 1 && 
+          <SwipeImage user={users[currentIndex]} 
+        />
+        }
       </View>
+      <BotomBar/>
     </View>
   );
 }
@@ -20,14 +53,14 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: Constants.statusBarHeight
   },
-  swipes:{
-    flex:1,
-    padding:10,
-    paddingTop:8,
+  swipes: {
+    flex: 1,
+    padding: 10,
+    paddingTop: 8,
     shadowColor: "#000",
     shadowOffset: {
-        width: 0,
-        height: 3
+      width: 0,
+      height: 3
     },
     shadowOpacity: 0.29,
     shadowRadius: 4.65,
